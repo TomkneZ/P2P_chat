@@ -93,6 +93,7 @@ namespace P2P_Chat_on_Sockets
                     connection.Close();
                 }
             }
+
         }
 
         static public void ListenForConnections(ChatForm source)
@@ -102,6 +103,7 @@ namespace P2P_Chat_on_Sockets
 
             asyncTCPAcceptEventArgs.AcceptSocket = TCPAcceptSocket;
             asyncTCPAcceptEventArgs.UserToken = source;
+
             while (!TCPListenSocket.AcceptAsync(asyncTCPAcceptEventArgs))
             {
                 AcceptTCPConnectionSync(TCPListenSocket, asyncTCPAcceptEventArgs);
@@ -111,7 +113,7 @@ namespace P2P_Chat_on_Sockets
         {
             if (e.SocketError == SocketError.Success)
             {
-                AcceptTCPConnection(Sender, e);
+                AcceptTCPConnectionSync(Sender, e);
             }
             ListenForConnections((ChatForm)e.UserToken);
         }

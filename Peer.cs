@@ -60,15 +60,18 @@ namespace P2P_Chat_on_Sockets
             connectionSocket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
             connectionSocket.Bind(localEP);
             byte[] buf = new byte[255];
-            var asyncTCPConnectionEventArgs = new SocketAsyncEventArgs();
-            asyncTCPConnectionEventArgs.SetBuffer(buf, 0, NetworkConnector.MAXNAMELEN);
-            asyncTCPConnectionEventArgs.RemoteEndPoint = peerIP;
-            asyncTCPConnectionEventArgs.Completed += peerForm.ConnectionEstablished;
-            asyncTCPConnectionEventArgs.UserToken = this;
+            Encoding.ASCII.GetBytes(NetworkConnector.myUsername, 0, NetworkConnector.myUsername.Length, buf, 0);
 
-            if (!connectionSocket.ConnectAsync(asyncTCPConnectionEventArgs))
+            var asyncTCPConnectEventArgs = new SocketAsyncEventArgs();
+
+            asyncTCPConnectEventArgs.SetBuffer(buf, 0, NetworkConnector.MAXNAMELEN);
+            asyncTCPConnectEventArgs.RemoteEndPoint = peerIP;
+            asyncTCPConnectEventArgs.Completed += peerForm.ConnectionEstablished;
+            asyncTCPConnectEventArgs.UserToken = this;
+
+            if (!connectionSocket.ConnectAsync(asyncTCPConnectEventArgs))
             {
-                peerForm.ConnectionEstablished(connectionSocket, asyncTCPConnectionEventArgs);
+                peerForm.ConnectionEstablished(connectionSocket, asyncTCPConnectEventArgs);
             }
         }
         public void ReceiveMessage()

@@ -58,16 +58,19 @@ namespace P2P_Chat_on_Sockets
         }
         public void ConnectionEstablished(object Sender, SocketAsyncEventArgs e)
         {
-            var connectionMsgInfo = new SocketAsyncEventArgsContainer(e.Buffer, e.Offset, e.BytesTransferred, e.SocketError,
-                ((Peer)e.UserToken).peerIP, ((Peer)e.UserToken).peerName);
+            var connectionMessageInfo = new SocketAsyncEventArgsContainer(e.Buffer,
+                    e.Offset, e.BytesTransferred, e.SocketError, ((Peer)e.UserToken).peerIP,
+                    ((Peer)e.UserToken).peerName);
+
             if (this.InvokeRequired)
             {
-                this.Invoke(new ShowSocketEventInfo(ShowConnectionMsg), connectionMsgInfo);
+                this.Invoke(new ShowSocketEventInfo(ShowConnectionMsg), connectionMessageInfo);
             }
             else
             {
-                ShowConnectionMsg(connectionMsgInfo);
+                ShowConnectionMsg(connectionMessageInfo);
             }
+
             if (e.SocketError == SocketError.Success)
             {
                 AddPeer((Peer)e.UserToken);

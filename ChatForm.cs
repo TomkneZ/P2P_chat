@@ -152,7 +152,7 @@ namespace P2P_Chat_on_Sockets
                         string recvdMessage = Encoding.ASCII.GetString(messageInfo.buffer).TrimEnd('\0');
                         if (recvdMessage.Length > 0)
                         {
-                            tbMessages.AppendText($"{messageInfo.peerName} says:" + TextBoxNL +
+                            tbMessages.AppendText($"{messageInfo.peerName} " + $"({messageInfo.peerIP.Address.ToString()} says:" + TextBoxNL +
                                 Encoding.ASCII.GetString(messageInfo.buffer).TrimEnd('\0') + TextBoxNL);
                         }
                     }

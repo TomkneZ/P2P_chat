@@ -110,7 +110,8 @@ namespace P2P_Chat_on_Sockets
         public bool MessageReceivedSync(object Sender, SocketAsyncEventArgs e)
         {
             var messageRecievedMessageInfo = new SocketAsyncEventArgsContainer(e.Buffer,
-                    e.Offset, e.BytesTransferred, e.SocketError, (IPEndPoint)e.RemoteEndPoint, ((Peer)e.UserToken).peerName);
+                    e.Offset, e.BytesTransferred, e.SocketError, ((Peer)e.UserToken).peerIP,
+                    ((Peer)e.UserToken).peerName);
 
             if (this.InvokeRequired)
             {
@@ -145,14 +146,14 @@ namespace P2P_Chat_on_Sockets
                 case (SocketError.Success):
                     if (messageInfo.buffer.Length == 0)
                     {
-                        tbMessages.AppendText($"{messageInfo.peerName} disconnected!" + TextBoxNL);
+                        tbMessages.AppendText($"{messageInfo.peerName}  disconnected!" + TextBoxNL);
                     }
                     else
                     {
                         string recvdMessage = Encoding.ASCII.GetString(messageInfo.buffer).TrimEnd('\0');
                         if (recvdMessage.Length > 0)
                         {
-                            tbMessages.AppendText($"{messageInfo.peerName} " + $"({messageInfo.peerIP.Address.ToString()} says:" + TextBoxNL +
+                            tbMessages.AppendText($"{messageInfo.peerName} ({messageInfo.peerIP.Address.ToString()}) says:" + TextBoxNL +
                                 Encoding.ASCII.GetString(messageInfo.buffer).TrimEnd('\0') + TextBoxNL);
                         }
                     }
